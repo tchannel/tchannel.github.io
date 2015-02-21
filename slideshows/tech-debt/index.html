@@ -1,0 +1,166 @@
+<!DOCTYPE html><html><head><title>Big</title><meta charset='utf-8'><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<link href='big.css' rel='stylesheet' type='text/css' />
+<link href='http://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+
+
+<style>
+  body {
+    font-family: 'Quicksand', sans-serif;
+  }
+  .scratchy {
+    font-family: 'Special Elite', cursive;
+  }
+  .black {
+    color: black;
+  }
+  .subtitle {
+    font-size:0.6em;
+  }
+  .black-stroke {
+   -webkit-text-stroke-width: .05em;
+   -webkit-text-stroke-color: black;
+  }
+  .center {
+    text-align:center;
+  }
+}
+</style>
+<script src='big.js'></script></head><body>
+
+<div class='scratchy'><em>Managed</em><br/> Technical<br /> Debt</div>
+
+<div class="center">what is <em>technical debt</em> anyway?</div>
+
+<div>can be bad <em>code</em> <br />lack of <em>documentation</em> <br /> no <em>automation</em></div>
+
+<div><em>debt</em> implies <em>investment</em></div>
+
+<div><img src='http://www.successfulworkplace.org/wp-content/uploads/2013/10/bank-teller.jpg' />like borrowing<br /> from the bank?</div>
+
+<div><img src='http://mafiatoday.com/wp-content/uploads/2012/01/r151092_538084.jpg' /><em>technical debt is like<br /> borrowing from the </em>mafia</div>
+
+<div>but you have to take some risk,</div>
+<div>incur some <em>debt</em><br />
+<span class='subtitle'>in order to achieve anything.</span></div>
+
+<div><em>everybody</em> has some technical debt</div>
+
+<div>the problem is when it is <em>unmanaged</em><br />
+<span class='subtitle'>you need visibility on the problem</span>
+</div>
+
+<div><img src='http://www.xqa.com.ar/visualmanagement/wp-content/kanban_board.jpg' /></div>
+
+<div><img src='http://verraes.net/img/posts/2013-07-21-managed-technical-debt/map-of-technical-debt.jpg' /></div>
+
+<div><em>literal</em> visibility</div>
+
+
+<div>managing debt with post-its<br />
+<span class='subtitle'>x-axis (on top) is <em>categories / features</em><br />
+y-axis is <em>problems / debt</em></span>
+</div>
+
+<div><img src='chart.png' /></div>
+
+<div>when you find a new problem, <em>add</em> a post-it</div>
+
+<div>when you encounter a problem <br />
+that's already on the board<br />
+<span class='subtitle'>you <em>add an X</em> on the post-it</span>
+</div>
+
+<div>3 strikes and you refactor<br />
+<span class='subtitle'>That post-it moves to the bottom of the list, becomes <em>priority</em></span>
+</div>
+
+<div>features with the longest list of debt become <em>priority</em></div>
+
+<div>some final words from <em>mathias verraes</em> about managing technical debt</div>
+
+<div>1. when introducing new debt, estimate <em>cost/benefit</em></div>
+
+<div>2. if a new solution isn't optimal, <em>understand what would be</em><br />
+  <span class='subtitle'>
+    and how we would eventually evolve toward the optimal solution
+  </span>
+</div>
+
+<div>3. <em>document the debt</em>. that's the point of the post-its</div>
+
+<div>4. don't introduce <em>debt on top of debt</em></div>
+
+<div>5. existing debt is paid off <em>as soon as there's a clear need</em><br />
+<span class='subtitle'>
+(that's the point of the <em>3 strikes / refactor</em> rule)
+</span>
+</div>
+
+<div>we all know that <em>orders is the worst.</em></div>
+
+<div>but lots of other things are really bad</div>
+
+<div>does this mean we have to stop and ...</div>
+
+<div class='black-stroke center'><img src='http://katrinarasbold.com/wp-content/uploads/2014/12/fix.jpg' /> FIX ALL <br /> THE THINGS?!?</div>
+
+
+<div><em>NO</em></div>
+
+
+<div>big refactors almost always<br />
+<span class='subtitle'>take <em>longer</em> than estimated<br />
+don't actually <em>fix</em> everything<br />
+cause new <em>problems</em><br />
+and make everybody <em>sad</em>
+</span>
+</div>
+
+<div>life of a project</div>
+
+<div>1 <img src='http://xprogramming.com/wp-content/uploads/Ref01-1024x768.jpg' /></div>
+
+<div>2 <img src='http://xprogramming.com/wp-content/uploads/Ref02-1024x768.jpg' /></div>
+
+<div>2 <img src='http://xprogramming.com/wp-content/uploads/Ref04-1024x768.jpg' /></div>
+
+<div>2 <img src='http://xprogramming.com/wp-content/uploads/Ref06-1024x768.jpg' /></div>
+
+<div>2 <img src='http://xprogramming.com/wp-content/uploads/Ref08-1024x768.jpg' /></div>
+
+<div>every time we touch the code, we hit <em>trouble</em></div>
+
+<div>so we start clearing the brush, only where we hit it</div>
+
+<div>2 <img src='http://xprogramming.com/wp-content/uploads/RefA1-1024x768.jpg' /></div>
+
+<div>sometimes these <em>incremental refactors</em> are tiny!<Br />
+<span class='subtitle'>fix one method<br />
+remove one object<br />
+add one repository<br />
+document one complex thing
+</span>
+</div>
+
+<div>2 <img src='http://xprogramming.com/wp-content/uploads/RefA2-1024x768.jpg' /></div>
+
+<div>then we start to <em>reuse</em> things we just cleaned up</div>
+
+<div>2 <img src='http://xprogramming.com/wp-content/uploads/RefA3-1024x768.jpg' /></div>
+
+<div>and that's how we fix <em>orders</em><br />
+(and everything else) without<br />
+starting over from nothing</div>
+
+<div>
+<em>sources:</em><br />
+<span class='subtitle'>
+<a href='http://verraes.net/2013/07/managed-technical-debt/'>Managed technical debt</a> by Mathias Verraes<br />
+<a href='http://verraes.net/2014/06/managed-technical-debt-revisited/'>Managed technical debt revisited</a> by Mathias Verraes<br />
+<a href='http://xprogramming.com/articles/refactoring-not-on-the-backlog/'>Refactoring: not on the backlog</a>
+</span>
+</div>
+
+</body>
+</html>
