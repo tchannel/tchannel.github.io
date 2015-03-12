@@ -1,0 +1,352 @@
+<!DOCTYPE html><html><head><title>Big</title><meta charset='utf-8'><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<link href='big.css' rel='stylesheet' type='text/css' />
+<link href='http://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+ <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sunburst"></script>
+
+<style>
+  body {
+    font-family: 'Quicksand', sans-serif;
+  }
+  .scratchy {
+    font-family: 'Special Elite', cursive;
+  }
+  .black {
+    color: black;
+  }
+  .subtitle {
+    font-size:0.6em;
+  }
+  .black-stroke {
+   -webkit-text-stroke-width: .05em;
+   -webkit-text-stroke-color: black;
+  }
+  .center {
+    text-align:center;
+  }
+
+</style>
+<script src='big.js'></script>
+</head><body>
+
+<div class='scratchy'>maps & geometry</div>
+
+<div><strong>tools</strong></div>
+
+<div><em>mapbox</em><br />
+<a href='http://mapbox.com' target='_blank' class='subtitle'>mapbox.com</a>
+</div>
+
+<div>provides the map imagery</div>
+
+<div><img src='mapbox-map.png' /></div>
+
+<div><em>leaflet.js</em><br />
+<a href='http://leafletjs.com' target='_blank' class='subtitle'>leafletjs.com</a>
+</div>
+
+<div>js to put things on the map and interact</div>
+
+<div><img src='leaflet-layers.png' /></div>
+
+<div><em>turf.js</em><br />
+<a href='http://turfjs.org' target='_blank' class='subtitle'>turfjs.org</a>
+</div>
+
+<div>js for doing analysis and cool stuff with map data</div>
+
+<div><img src='turf-tris.png' /></div>
+
+<div><strong>coordinates</strong></div>
+
+<div><img src='http://www.studyzone.org/testprep/ss5/b/comcon3.jpg' /></div>
+
+<div><em>longitude</em> = <em>x</em> coordinate</div>
+
+<div><em>latitude</em> = <em>y</em> coordinate</div>
+
+<div><strong>geojson</strong><br />
+<a href='http://geojson.org' target='_blank' class='subtitle'>geojson.org</a>
+</div>
+
+<div>geojson is made up of 3 major things:</div>
+
+<div><em>geometries</em></div>
+
+<div><em>geometries</em> are spatial data, with coordinates</div>
+
+<div><pre class='prettyprint'>
+
+{
+  "type": "Point",
+  "coordinates": [
+    -85.386703, 40.192933
+  ]
+}
+
+</pre></div>
+
+<div>coordinates are <em>longitude</em>, <em>latitude</em> (<em>x</em>, <em>y</em>)</div>
+
+<div><pre class='prettyprint'>
+{
+  "type": "LineString",
+  "coordinates": [
+    [-85.3939, 40.1956],
+    [-85.3864, 40.2045],
+    [-85.3239, 40.2716],
+    [-85.3143, 40.2779]
+  ]
+}
+</pre></div>
+
+<div><pre class='prettyprint'>
+{
+  "type": "Polygon",
+  "coordinates": [
+    [
+      [-85.31501770019531, 40.211391988438685],
+      [-85.31501770019531, 40.24494329371422],
+      [-85.2593994140625, 40.24494329371422],
+      [-85.2593994140625, 40.211391988438685],
+      [-85.31501770019531, 40.211391988438685]
+    ],
+    [
+      [-85.28343200683594, 40.22816971852209],
+      [-85.28343200683594, 40.23760536584024],
+      [-85.26832580566406, 40.23760536584024],
+      [-85.26832580566406, 40.22816971852209],
+      [-85.28343200683594, 40.22816971852209]
+    ]
+  ]
+}
+</pre></div>
+
+<div><em>polygons</em> can have multiple <em>rings</em></div>
+
+<div>the first ring is the <em>outer boundary</em>, others are <em>holes</em></div>
+
+<div><img src='geojson-polygon.png' /></div>
+
+<div><em>rings</em> must always start and end with the same point</div>
+
+<div>
+<em>[-85.28343200683594, 40.22816971852209]</em>,<br />
+[-85.28343200683594, 40.23760536584024],<br />
+[-85.26832580566406, 40.23760536584024],<br />
+[-85.26832580566406, 40.22816971852209],<br />
+<em>[-85.28343200683594, 40.22816971852209]</em>
+</div>
+
+<div><pre class='prettyprint'>
+{
+  "type": "MultiPolygon",
+  "coordinates": [
+    [
+      [
+        [-85.31501770019531, 40.211391988438685],
+        [-85.31501770019531, 40.24494329371422],
+        [-85.2593994140625, 40.24494329371422],
+        [-85.2593994140625, 40.211391988438685],
+        [-85.31501770019531, 40.211391988438685]
+      ]
+    ],
+    [
+      [
+        [-85.28343200683594, 40.22816971852209],
+        [-85.28343200683594, 40.23760536584024],
+        [-85.26832580566406, 40.23760536584024],
+        [-85.26832580566406, 40.22816971852209],
+        [-85.28343200683594, 40.22816971852209]
+      ]
+    ]
+  ]
+}
+</pre></div>
+
+<div><em>multipolygons</em> have an array of polygons as their coordinates</div>
+
+<div><em>features</em></div>
+
+<div><em>features</em> wrap geometries, adding tabular data to them</div>
+
+<div><pre class='prettyprint'>
+{
+  "type": "Feature",
+  "properties": {
+    "yield": 200,
+    "windspeed": 15.0
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-85.386703, 40.192933]
+  }
+}
+</pre></div>
+
+<div><em>collections</em></div>
+
+<div><em>collections</em> wrap up geometries or features<br />
+<span class='subtitle'>(thats <em>GeometryCollection</em> and <em>FeatureCollection</em>, respectively)</span>
+</div>
+
+<div><pre class='prettyprint'>
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "yield": 200,
+        "windspeed": 15.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-85.386703, 40.192933]
+      }
+    }
+  ]
+}
+</pre></div>
+
+<div><pre class='prettyprint'>
+{
+  "type": "GeometryCollection",
+  "geometries": [
+    {
+      "type": "Point",
+      "coordinates": [-85.386703, 40.192933]
+    }
+  ]
+}
+</pre></div>
+
+<div><strong>how to map*</strong><br />
+<span class='subtitle'><em>*with leaflet</em></div>
+
+<div>several parts:</div>
+
+<div>1. a <em>map</em> - container for controls, tiles and layers</div>
+
+<div><pre class='prettyprint'>
+
+// HTML:
+&lt;div id="map_canvas"&gt;&lt;/div&gt;
+
+// JS:
+var map = L.map('map_canvas');
+map.setView([y, x], zoom);
+
+
+</pre></div>
+
+<div>looks really boring.</div>
+
+<div>2. one or more <em>tile layers</em></div>
+
+<div>imagery is made of <em>tiles</em> so systems don't have to load the whole world as one image</div>
+
+<div><img src='https://i-msdn.sec.s-msft.com/dynimg/IC96238.jpg' /></div>
+
+<div>3 components of a tile<br />
+<span class='subtitle'>
+<em>zoom</em> level; 1 through 20~<br />
+<em>x</em> east/west tile location<br />
+<em>y</em> north/south tilelocation
+</span>
+</div>
+
+<div><pre class='prettyprint'>
+
+
+L.tileLayer('http://{s}.tiles.mapbox.com/v3/examples.map-20v6611k/{z}/{x}/{y}.png', {
+  maxZoom: 18
+}).addTo(map);
+
+
+</pre></div>
+
+
+<div>3. <em>layers / features</em></div>
+
+<div><pre class='prettyprint'>
+
+
+var marker = L.marker([40.439209, -84.977702]).addTo(map);
+var shape = L.geoJson( {
+  "type": "Feature",
+  "properties": {},
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [-84.98903274536133, 40.42551942170478],
+        [-84.98903274536133, 40.44564069181862],
+        [-84.96397018432616, 40.44564069181862],
+        [-84.96397018432616, 40.42551942170478],
+        [-84.98903274536133, 40.42551942170478]
+      ]
+    ]
+  }
+}).addTo(map);
+
+
+
+</pre></div>
+
+
+
+<div><strong>turf.js</strong></div>
+
+<div>a set of <em>gis tools</em>, built around geojson</div>
+
+<div>
+modular<br />
+lightweight<br />
+fast<br />
+frontend<br />
+backend<br />
+awesome
+</div>
+
+<div>
+modular<br />
+lightweight<br />
+fast<br />
+frontend<br />
+backend<br />
+<em>awesome</em>
+</div>
+
+<div><pre class='prettyprint'>
+
+  var turf.point([-85.386703, 40.192933]);
+  // creates a geojson point feature
+
+  var turf.polygon([[
+    [-85.31501770019531, 40.211391988438685],
+    [-85.31501770019531, 40.24494329371422],
+    [-85.2593994140625, 40.24494329371422],
+    [-85.2593994140625, 40.211391988438685],
+    [-85.31501770019531, 40.211391988438685]
+  ]]);
+  // creates a geojson polygon feature
+
+</pre></div>
+
+<div><pre class='prettyprint'>
+
+
+  var p1 = // the left polygon;
+  var p2 = // the right polygon;
+
+  var p3 = turf.intersect(p1, p2);
+
+
+</pre></div>
+
+
+<div><img src='turf-intersect-pre.png' /></div>
+
+<div><img src='turf-intersect-post.png' /></div>
+
