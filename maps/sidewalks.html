@@ -16,51 +16,53 @@
 
 <div id='map'></div>
 <script>
-mapboxgl.accessToken = 'pk.eyJ1IjoidGNxbCIsImEiOiJaSlZ6X3JZIn0.mPwXgf3BvAR4dPuBB3ypfA';
-var map = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/tcql/ciftz3vmh0015tgkpfyy0rn4l', //stylesheet location
-    center: [-73.95706884246236, 40.77904734050378], // starting position
-    zoom: 14 // starting zoom
-});
+$(function() {
+    mapboxgl.accessToken = 'pk.eyJ1IjoidGNxbCIsImEiOiJaSlZ6X3JZIn0.mPwXgf3BvAR4dPuBB3ypfA';
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/tcql/ciftz3vmh0015tgkpfyy0rn4l', //stylesheet location
+        center: [-73.95706884246236, 40.77904734050378], // starting position
+        zoom: 14 // starting zoom
+    });
 
-map.on('click', function (e) {
-    map.featuresAt(e.point, {radius: 5}, function (err, features) {
-        if (err) throw err;
-        var sidewalks = features.filter(function(elem) {
-            if (elem.layer.id === "sidewalks-multiregion") {
-                return true;
+    map.on('click', function (e) {
+        map.featuresAt(e.point, {radius: 5}, function (err, features) {
+            if (err) throw err;
+            var sidewalks = features.filter(function(elem) {
+                if (elem.layer.id === "sidewalks-multiregion") {
+                    return true;
+                }
+                return false;
+            });
+            if (sidewalks.length === 0) return;
+
+            var way_id = sidewalks[0].properties._osm_way_id;
+            var tooltip = new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML("<pre>"+JSON.stringify(sidewalks[0].properties, null, 2)+"</pre>" +
+                    "<button id='open_in_josm'>Open in JOSM</button>")
+                .addTo(map);
+
+            $("#open_in_josm").on('click', function () {
+                var bounds = map.getBounds();
+                console.log(way_id)
+                openInJOSM(way_id, bounds.getWest(), bounds.getEast(), bounds.getNorth(), bounds.getSouth())
+            });
+        });
+    });
+
+
+    function openInJOSM(way_id, left, right, top, bottom) {
+        var url = "http://127.0.0.1:8111/load_and_zoom?new_layer=true&left=" + left + "&right=" + right + "&top=" + top + "&bottom=" + bottom + "&select=way" + way_id;
+               
+        $.ajax({
+            url: url,
+            complete: function(t) {
+                if (t.status!=200) alert("JOSM remote control did not respond (" + t.status + "). Do you have JOSM running?");
             }
-            return false;
         });
-        if (sidewalks.length === 0) return;
-
-        var way_id = sidewalks[0].properties._osm_way_id;
-        var tooltip = new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML("<pre>"+JSON.stringify(sidewalks[0].properties, null, 2)+"</pre>" +
-                "<button id='open_in_josm'>Open in JOSM</button>")
-            .addTo(map);
-
-        $("#open_in_josm").on('click', function () {
-            var bounds = map.getBounds();
-            console.log(way_id)
-            openInJOSM(way_id, bounds.getWest(), bounds.getEast(), bounds.getNorth(), bounds.getSouth())
-        });
-    });
+    }
 });
-
-
-function openInJOSM(way_id, left, right, top, bottom) {
-    var url = "http://127.0.0.1:8111/load_and_zoom?new_layer=true&left=" + left + "&right=" + right + "&top=" + top + "&bottom=" + bottom + "&select=way" + way_id;
-           
-    $.ajax({
-        url: url,
-        complete: function(t) {
-            if (t.status!=200) alert("JOSM remote control did not respond (" + t.status + "). Do you have JOSM running?");
-        }
-    });
-}
 </script>
 
 </body>
