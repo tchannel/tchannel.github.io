@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+  <style type='text/css'>
+    body {
+      font-family:'Helvetica';
+      letter-spacing:-5px;
+      background:#000;
+      background-size:100%;
+      color:#fff;
+      margin:0;
+      padding:0;
+      font-weight:bold;
+    }
+
+    iframe {
+      width: 95%;
+      height: 95%;
+      border: 0;
+      display: block;
+    }
+
+    h1, h2, h3, p {
+      margin:0;
+    }
+
+    em, a, strong {
+      font-style:normal;
+    }
+
+    em, a {
+      color: hsl(148, 100%, 50%);
+    }
+
+    strong {
+      color: hsl(291, 100%, 50%);
+    }
+
+    .mod1 {
+      color: hsl(148, 100%, 50%);
+    }
+
+    .mod2 {
+      color: hsl(291, 100%, 50%);
+    }
+
+    .nowrap {
+      white-space: nowrap;
+    }
+
+    .small {
+      font-size: 0.5em;
+    }
+
+    .smaller {
+      font-size: 0.2em;
+    }
+
+    .supersmall {
+      font-size: 0.02em;
+    }
+
+    a {
+      background:#34d0e7;
+      color:#000;
+      text-decoration:none;
+    }
+
+    img {
+      height:100%;
+    }
+
+    body > div {
+      cursor:pointer;
+      cursor:hand;
+      position:absolute;
+      top:0px;
+      left:0px;
+      padding:75px;
+      line-height:97%;
+    }
+
+    div.center {
+      text-align:center;
+    }
+
+    div.imageText {
+      text-shadow:0px 0px 5px rgba(0,0,0,0.2);
+    }
+
+    notes {
+        display:none;
+    }
+    /* normally not good, but ok in context of full screen directional navigation */
+    :focus {
+        outline: 0;
+    }
+  </style>
+  <script type='text/javascript'>
+    window.onload = function() {
+      var s = document.querySelectorAll('body > div'), ti, i;
+      var notes = [];
+      for (i = 0; i < s.length; i++) {
+        s[i].setAttribute('tabindex', 0);
+        var noteElements = s[i].getElementsByTagName('notes');
+        notes.push([]);
+        while (noteElements.length) {
+          var note = noteElements[0];
+          notes[i].push(note.innerHTML.trim());
+          note.parentNode.removeChild(note);
+        }
+      }
+      if (!s.length) return;
+      var big = window.big = { current: 0, forward: fwd, reverse: rev, go: go, length: s.length };
+      function resize() {
+        var w = window.innerWidth, h = window.innerHeight, e = s[big.current];
+        e.style.fontSize = h + 'px';
+        function pass(cinch, start) {
+          for (var i = start; i > 0 && (e.offsetWidth > w || e.offsetHeight > h); i -= cinch) {
+            e.style.fontSize = i + 'px';
+          }
+          return i + cinch;
+        }
+        pass(2, pass(5, pass(10, h - 2)));
+        e.style.marginTop = (h - e.offsetHeight) / 2 + 'px';
+      }
+      function go(n) {
+        big.current = n;
+        for (i = 0; typeof console === 'object' && i < notes[n].length; i++) console.log('%c%s: %s', 'padding:5px;font-family:serif;font-size:18px;line-height:150%;', n, notes[n][i]);
+        var e = s[n], t = parseInt(e.getAttribute('data-time-to-next') || 0, 10);
+        document.body.className = e.getAttribute('data-bodyclass') || '';
+        for (i = 0; i < s.length; i++) s[i].style.display = 'none';
+        e.style.display = 'inline';
+        e.focus();
+        if (e.firstChild && e.firstChild.nodeName === 'IMG') {
+          document.body.style.backgroundImage = 'url("' + e.firstChild.src + '")';
+
+          if (e.firstChild.getAttribute('data-background-size')) {
+            document.body.style.backgroundSize = e.firstChild.getAttribute('data-background-size');
+          } else {
+            document.body.style.backgroundSize = '100%';
+          }
+          e.firstChild.style.display = 'none';
+          if ('classList' in e) e.classList.add('imageText');
+        } else {
+          document.body.style.backgroundImage = '';
+          document.body.style.backgroundColor = e.style.backgroundColor;
+        }
+        if (ti !== undefined) window.clearInterval(ti);
+        if (t > 0) ti = window.setTimeout(fwd, t * 1000);
+        resize();
+        if (window.location.hash !== n) window.location.hash = n;
+        document.title = e.textContent || e.innerText;
+      }
+      document.onclick = function(e) { if (e.target.tagName !== 'A') go(++big.current % s.length); };
+      function fwd() { go(Math.min(s.length - 1, ++big.current)); }
+      function rev() { go(Math.max(0, --big.current)); }
+      document.onkeydown = function(e) {
+        if (e.which === 39 || e.which === 34 || e.which === 40) fwd();
+        if (e.which === 37 || e.which === 33 || e.which === 38) rev();
+      };
+      document.ontouchstart = function(e) {
+        var x0 = e.changedTouches[0].pageX;
+        document.ontouchend = function(e2) {
+          var x1 = e2.changedTouches[0].pageX;
+          if (x1 - x0 < 0) fwd();
+          if (x1 - x0 > 0) rev();
+        };
+      };
+      function parse_hash() {
+        return Math.max(Math.min(s.length - 1,
+          parseInt(window.location.hash.substring(1), 10)), 0);
+      }
+      if (window.location.hash) big.current = parse_hash() || big.current;
+      window.onhashchange = function() {
+        i = parse_hash();
+        if (i !== big.current) go(i);
+      };
+      window.onresize = resize;
+      go(big.current);
+    };
+  </script>
+</head>
+<body>
+<div></div>
+<div><img data-background-size='inherit' src='https://makeameme.org/media/templates/chemistry_cat.jpg' /><em class='small'>smart kitties</em></div>
+<div><img data-background-size='inherit' src="http://tr2.cbsistatic.com/hub/i/r/2016/05/12/3e26bf96-e5a5-4d69-94b8-6720736921c8/resize/1230x/3497f46795240e90c359d03666eedb41/istock000087614919medium.jpg" /></div>
+<div><img src="http://blog.schneider-electric.com/wp-content/uploads/2013/06/EM.png" /></div>
+<div>it's all <strong>connected</strong></div>
+<div><img src="movement.gif" />where people move</div>
+<div><img src="modes.gif" />how they move</div>
+<div><img src="accidents.gif" />open data</div>
+<div><em>what are the goals?</em></div>
+<div>
+safety&<br/>
+public transport&<br/>
+health care access&<br/>
+infrastructure&<br/>
+<strong>more efficient local govt</strong>
+</div>
+<div class='nowrap'><strong>data</strong> ➡ <em>decision-making</em></div>
+<div class='nowrap'><strong>data</strong> ➡ <em>certainty</em></div>
+<div class='nowrap'><img src="https://www.mapbox.com/cities/smart-cities.svg" /><strong>mapbox + cities</strong></div>
+<div><img src="vision-zero.gif" /></div>
+<div><img src="citibike.gif" /></div>
+<div>
+tools<br/>
+data<br/>
+analysis<br/>
+mentoring
+</div>
+<div><img src="http://farm4.static.flickr.com/3269/2857922079_d01e6bd668_o.jpg" />??? cities enter 3 cities leave</div>
+<div>mapbox.com/cities</div>
+<div><em class='mod2'>@tcql</em> github.com/tcql</div>
+</body>
+</html>
